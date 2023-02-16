@@ -2,12 +2,17 @@ export default {
   pages: [
     "pages/index/index",
     "pages/user/user",
-    "pages/history/history"
+    "pages/history/historySearch",
+    "pages/history/history",
+    "pages/tasks/tasksPending",
+    "pages/tasks/tasksUpdate",
+    "pages/task/task",
+    "pages/taskDetail/taskDetail"
   ],
   window: {
     backgroundTextStyle: "light",
     navigationBarBackgroundColor: "#fff",
-    navigationBarTitleText: "WeChat",
+    navigationBarTitleText: "中交一航局进度管理小程序",
     navigationBarTextStyle: "black",
   },
   tabBar: {
@@ -19,7 +24,7 @@ export default {
        selectedIconPath: 'pages/imgs/tabs/home-act.png'
      },
      {
-       pagePath: 'pages/history/history',
+       pagePath: 'pages/history/historySearch',
        text: '历史',
        iconPath: 'pages/imgs/tabs/history.png',
        selectedIconPath: 'pages/imgs/tabs/history-act.png'
