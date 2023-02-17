@@ -1,10 +1,33 @@
 import {Cell, CellGroup} from "@nutui/nutui-react-taro";
+import Taro from "@tarojs/taro";
+import {Image} from "@tarojs/components";
+import {useEffect, useState} from "react";
 
 export default function User(){
 
+  // const [avatarUrl, SetAvatarUrl] = useState(null);
+
+  useEffect(() => {
+      Taro.getUserProfile({
+        desc: '用于完善个人资料',
+        success: (res) => {
+          console.log(res);
+          // SetAvatarUrl(res.userInfo.avatarUrl);
+        }
+      });
+  }
+  // const accountInfo = Taro.getAccountInfoSync()
+
+  // Taro.request({url: 'https://localhost:44360/WeatherForecast'}).then(function (res) {
+  //   console.log(res)
+  // }
+    ,[])
+
+
   return (
     <>
-      user
+      {/*{avatarUrl &&  <Image src={avatarUrl} style='width: 60px;height: 60px' />}*/}
+
       <CellGroup
         title='个人信息'
       >

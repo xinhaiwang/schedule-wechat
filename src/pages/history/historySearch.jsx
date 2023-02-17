@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {Image, Text} from "@tarojs/components";
 import {Button, Cell, Col, DatePicker, Row} from '@nutui/nutui-react-taro';
-import { Sticky } from '@nutui/nutui-react-taro'
 import underConstruction from "../imgs/underConstruction.jpg";
 
 import './history.scss';
@@ -17,7 +16,7 @@ export default function HistorySearch(){
   }
 
   return (
-    <div>
+    <div >
       <Image
         src={underConstruction}
         mode='heightFix'
@@ -27,31 +26,32 @@ export default function HistorySearch(){
         <Text>历史查询 </Text>
       </Row>
 
-      <Cell title='提交起始日期：' desc={desc1} onClick={() => setShow1(true)} />
-      <DatePicker
-        title='日期选择'
-        visible={show1}
-        isShowChinese
-        onCloseDatePicker={() => setShow1(false)}
-        onConfirmDatePicker={(values,options) => confirm1(values,options)}
-      />
+      <Col type='flex' align='end'>
+        <Cell title='提交起始日期：' desc={desc1} onClick={() => setShow1(true)} />
+        <DatePicker
+          title='日期选择'
+          visible={show1}
+          isShowChinese
+          onCloseDatePicker={() => setShow1(false)}
+          onConfirmDatePicker={(values,options) => confirm1(values,options)}
+        />
 
-      <Cell title='提交截止日期：' desc={desc1} onClick={() => setShow1(true)} />
-      <DatePicker
-        title='日期选择'
-        visible={show1}
-        isShowChinese
-        onCloseDatePicker={() => setShow1(false)}
-        onConfirmDatePicker={(values,options) => confirm1(values,options)}
-      />
+        <Cell title='提交截止日期：' desc={desc1} onClick={() => setShow1(true)} />
+        <DatePicker
+          title='日期选择'
+          visible={show1}
+          isShowChinese
+          onCloseDatePicker={() => setShow1(false)}
+          onConfirmDatePicker={(values,options) => confirm1(values,options)}
+        />
 
-      <Sticky bottom={500} position="bottom">
-        <Row type='flex' justify='center'>
+        <Row type='flex' justify='center' align='end'>
           <Button type='info' onClick={() => {Taro.navigateTo({url: '/pages/history/history'})}} >
             历史查询
           </Button>
         </Row>
-      </Sticky>
+      </Col>
+
     </div>
   )
 }
