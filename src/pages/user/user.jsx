@@ -1,6 +1,5 @@
 import {Cell, CellGroup} from "@nutui/nutui-react-taro";
 import Taro from "@tarojs/taro";
-import {Image} from "@tarojs/components";
 import {useEffect, useState} from "react";
 
 export default function User(){
