@@ -1,4 +1,4 @@
-import Taro, {useLaunch} from "@tarojs/taro";
+import {useLaunch} from "@tarojs/taro";
 import "./app.scss";
 function App(props) {
 

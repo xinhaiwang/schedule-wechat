@@ -1,18 +1,28 @@
 import {useState} from "react";
 import {Image, Text} from "@tarojs/components";
 import {Button, Cell, Col, DatePicker, Row} from '@nutui/nutui-react-taro';
+import Taro from "@tarojs/taro";
 import underConstruction from "../imgs/underConstruction.jpg";
 
 import './history.scss';
-import Taro from "@tarojs/taro";
 
 export default function HistorySearch(){
 
-  const [show1, setShow1] = useState(false)
-  const [desc1, setDesc1] = useState('2012年 01月 01日')
+  const [showStart, setShowStart] = useState(false)
+  const [start, setStart] = useState('2023-01-01')
 
-  const confirm1 = (values, options)=>{
-    setDesc1(options.map((option) => option.text).join(' '))
+  const [showEnd, setShowEnd] = useState(false)
+  const [end, setEnd] = useState('2023-12-31')
+
+  const confirmStart = (values, options)=>{
+    setStart(options.map((option) => option.text).join('-'))
+  }
+  const confirmEnd = (values, options)=>{
+    setEnd(options.map((option) => option.text).join('-'))
+  }
+
+  function handleClick(){
+    Taro.navigateTo({url: `/pages/history/historyList?start=${start}&end=${end}`})
   }
 
   return (
@@ -27,26 +37,24 @@ export default function HistorySearch(){
       </Row>
 
       <Col type='flex' align='end'>
-        <Cell title='提交起始日期：' desc={desc1} onClick={() => setShow1(true)} />
+        <Cell title='提交起始日期：' desc={start} onClick={() => setShowStart(true)} />
         <DatePicker
           title='日期选择'
-          visible={show1}
-          isShowChinese
-          onCloseDatePicker={() => setShow1(false)}
-          onConfirmDatePicker={(values,options) => confirm1(values,options)}
+          visible={showStart}
+          onCloseDatePicker={() => setShowStart(false)}
+          onConfirmDatePicker={(values,options) => confirmStart(values,options)}
         />
 
-        <Cell title='提交截止日期：' desc={desc1} onClick={() => setShow1(true)} />
+        <Cell title='提交截止日期：' desc={end} onClick={() => setShowEnd(true)} />
         <DatePicker
           title='日期选择'
-          visible={show1}
-          isShowChinese
-          onCloseDatePicker={() => setShow1(false)}
-          onConfirmDatePicker={(values,options) => confirm1(values,options)}
+          visible={showEnd}
+          onCloseDatePicker={() => setShowEnd(false)}
+          onConfirmDatePicker={(values,options) => confirmEnd(values,options)}
         />
 
         <Row type='flex' justify='center' align='end'>
-          <Button type='info' onClick={() => {Taro.navigateTo({url: '/pages/history/history'})}} >
+          <Button type='info' onClick={handleClick} >
             历史查询
           </Button>
         </Row>

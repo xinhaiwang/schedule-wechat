@@ -3,11 +3,12 @@ export default {
     "pages/index/index",
     "pages/user/user",
     "pages/history/historySearch",
-    "pages/history/history",
+    "pages/history/historyList",
+    "pages/history/historyDetail",
     "pages/tasks/tasksPending",
     "pages/tasks/tasksUpdate",
     "pages/task/task",
-    "pages/taskDetail/taskDetail"
+    "pages/taskDetail/taskDetail",
   ],
   window: {
     backgroundTextStyle: "light",

@@ -10,9 +10,7 @@ export default function TaskDetail(){
   const { data, error } = useSWR('https://localhost:7199/test', fetcher)
   const { trigger, isMutating } = useSWRMutation('https://localhost:7199/tasks', sendRequest, /* options */)
 
-
-  console.log(data);
-
+  console.log(data)
 
 
   const [showActStartTime, setShowActStartTime] = useState(false)

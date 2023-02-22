@@ -27,6 +27,15 @@ const Index = () => {
       />
 
       <CellGroup class='content'>
+        {/*<Cell center title='数据申报'  isLink iconSlot={*/}
+        {/*  <img*/}
+        {/*    src={dateImg}*/}
+        {/*    style='width: 60px;height: 60px'*/}
+        {/*  />*/}
+        {/*}*/}
+        {/*/>*/}
+
+
         <Row type='flex' onClick={() => {Taro.navigateTo({url: "/pages/tasks/tasksUpdate"})}} >
           <div style='padding-left: 10px'>
             <Image
