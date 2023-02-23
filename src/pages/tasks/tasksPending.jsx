@@ -8,6 +8,7 @@ import {fetcher} from "../../fetcher";
 
 export default function TasksPending(){
   const { data: tasks, error } = useSWR(`https://localhost:7199/tasks?start=${getDay(0)}&end=${getDay(30)}`, fetcher);
+  console.log("tasks",tasks);
 
 
   const [tabValue, setTabValue] = useState('0');
