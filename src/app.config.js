@@ -2,13 +2,13 @@ export default {
   pages: [
     "pages/index/index",
     "pages/user/user",
-    "pages/history/historySearch",
-    "pages/history/historyList",
     "pages/history/historyDetail",
     "pages/tasks/tasksPending",
     "pages/tasks/tasksUpdate",
     "pages/task/task",
     "pages/taskDetail/taskDetail",
+    "pages/wbs/wbs",
+    "pages/wbs/sub"
   ],
   window: {
     backgroundTextStyle: "light",
@@ -20,13 +20,13 @@ export default {
     list: [
      {
        pagePath: 'pages/index/index',
-       text: '首页',
+       text: '任务',
        iconPath: 'pages/imgs/tabs/home.png',
        selectedIconPath: 'pages/imgs/tabs/home-act.png'
      },
      {
-       pagePath: 'pages/history/historySearch',
-       text: '历史',
+       pagePath: 'pages/wbs/wbs',
+       text: 'WBS',
        iconPath: 'pages/imgs/tabs/history.png',
        selectedIconPath: 'pages/imgs/tabs/history-act.png'
      },
