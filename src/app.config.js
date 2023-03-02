@@ -3,9 +3,6 @@ export default {
     "pages/index/index",
     "pages/user/user",
     "pages/history/historyDetail",
-    "pages/tasks/tasksPending",
-    "pages/tasks/tasksUpdate",
-    "pages/task/task",
     "pages/taskDetail/taskDetail",
     "pages/wbs/wbs",
     "pages/wbs/sub"

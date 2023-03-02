@@ -11,10 +11,13 @@ export default function HistoryDetail(){
     <>
       <CellGroup>
         <Cell title='最早开始时间' desc={data?.earlyStartTime} />
-        <Cell title='最早结束时间' desc={data?.earlyEndTime} />
         <Cell title='最晚开始时间' desc={data?.lateStartTime} />
-        <Cell title='最晚结束时间' desc={data?.lateEndTime} />
         <Cell title='实际开始时间' desc={data?.actStartTime} />
+      </CellGroup>
+
+      <CellGroup>
+        <Cell title='最早结束时间' desc={data?.earlyEndTime} />
+        <Cell title='最晚结束时间' desc={data?.lateEndTime} />
         <Cell title='实际结束时间' desc={data?.actEndTime} />
       </CellGroup>
     </>
