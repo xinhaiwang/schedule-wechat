@@ -4,6 +4,10 @@ export default {
     "pages/user/user",
     "pages/history/historyDetail",
     "pages/taskDetail/taskDetail",
+    "pages/taskDetail/taskActive",
+    "pages/taskDetail/taskComplete",
+    "pages/taskDetail/taskReady",
+    "pages/taskDetail/taskNotReady",
     "pages/wbs/wbs",
     "pages/wbs/sub"
   ],

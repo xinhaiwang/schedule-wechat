@@ -2,6 +2,7 @@ import useSWR from "swr";
 import Taro from "@tarojs/taro";
 import {Cell, CellGroup} from "@nutui/nutui-react-taro";
 import {fetcher} from "../../fetcher";
+import {getOnTapFunction, getTag} from "../lib";
 
 export default function WBS(){
 
@@ -17,6 +18,11 @@ export default function WBS(){
         {
           data?.tasks?.map(({id, name}) => (
             <Cell title={name} onClick={()=> Taro.navigateTo({url: `/pages/history/historyDetail?id=${id}`})} />
+          ))
+        }
+        {
+          data?.tasks?.map(({id, name, actEndTime, statusCode, activationCode}) => (
+            <Cell iconSlot={getTag(statusCode, activationCode)} title={name} desc={actEndTime} onClick={getOnTapFunction(id, statusCode, activationCode)} />
           ))
         }
       </CellGroup>

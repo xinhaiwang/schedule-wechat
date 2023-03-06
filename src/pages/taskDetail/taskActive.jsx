@@ -1,20 +1,27 @@
 import {Button, Cell, CellGroup, Collapse, CollapseItem, DatePicker, Row, Sticky} from "@nutui/nutui-react-taro";
 import {useCallback, useEffect, useState} from "react";
 import Taro, {getCurrentInstance} from "@tarojs/taro";
-import {useModal, useToast} from "taro-hooks";
+import {useModal, useNavigationBar, useToast} from "taro-hooks";
 import useSWRMutation from 'swr/mutation';
 import useSWR from 'swr';
 import {fetcher, sendRequest} from "../../fetcher";
 import {getStatus, getTag} from "../lib";
 
-export default function TaskDetail(){
+export default function TaskActive(){
   let params = getCurrentInstance().router.params;
   const { data, error } = useSWR(`https://localhost:7199/task/${params.id}`, fetcher)
-  console.log("data", data)
+  console.log("active", data)
 
   const { trigger, isMutating} = useSWRMutation('https://localhost:7199/updateTaskTime', sendRequest, /* options */)
 
-  // console.log(data)
+  const [_, { setTitle }] = useNavigationBar();
+
+  useEffect(() => {
+    if (data == null) {
+      return
+    }
+    setTitle(data.name)
+  }, [data]);
 
 
   const [showActStartTime, setShowActStartTime] = useState(false)
@@ -75,6 +82,7 @@ export default function TaskDetail(){
         <DatePicker
           title='时间选择'
           type='datetime'
+          modelValue={actStartTime}
           minDate={minDate}
           visible={showActStartTime}
           onCloseDatePicker={() => setShowActStartTime(false)}
@@ -89,6 +97,7 @@ export default function TaskDetail(){
         <DatePicker
           title='时间选择'
           type='datetime'
+          modelValue={actEndTime}
           minDate={minDate}
           visible={showActEndTime}
           onCloseDatePicker={() => setShowActEndTime(false)}
@@ -96,7 +105,7 @@ export default function TaskDetail(){
         />
       </CellGroup>
 
-      <Row type='flex' justify='end'>
+      <Row type='flex' justify='center'>
         <div style='padding-right: 10px'>
           {getTag(data?.statusCode, data?.activationCode)}
         </div>
@@ -112,7 +121,7 @@ export default function TaskDetail(){
               <Cell title='计划开始使用时间' desc='2023-01-01 08:30' />
               <Cell title='计划结束使用时间' desc='2023-01-01 08:30' />
               <Cell title='实际开始使用时间' desc='2023-01-01 08:30' />
-              <Cell title='>实际结束使用时间' desc='2023-01-01 08:30' />
+              <Cell title='实际结束使用时间' desc='2023-01-01 08:30' />
             </CellGroup>
           </CollapseItem>
           <CollapseItem title='资源二' name='2'>
@@ -128,12 +137,12 @@ export default function TaskDetail(){
           </CollapseItem>
         </Collapse>
 
-       <Row type='flex' justify='center'>
-         <Button type='info' onClick={handleClick}>
-           更新
-         </Button>
-       </Row>
-     </CellGroup>
-   </>
+        <Row type='flex' justify='center'>
+          <Button type='info' onClick={handleClick}>
+            更新
+          </Button>
+        </Row>
+      </CellGroup>
+    </>
   )
 }

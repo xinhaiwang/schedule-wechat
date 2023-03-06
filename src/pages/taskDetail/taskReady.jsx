@@ -1,42 +1,28 @@
-import {Button, Cell, CellGroup, Collapse, CollapseItem, DatePicker, Row, Sticky} from "@nutui/nutui-react-taro";
-import {useCallback, useEffect, useState} from "react";
+import {Button, Cell, CellGroup, Collapse, CollapseItem, DatePicker, Icon, Row, Sticky} from "@nutui/nutui-react-taro";
+import {useEffect, useState} from "react";
 import Taro, {getCurrentInstance} from "@tarojs/taro";
-import {useModal, useToast} from "taro-hooks";
 import useSWRMutation from 'swr/mutation';
+import {useNavigationBar} from "taro-hooks";
 import useSWR from 'swr';
 import {fetcher, sendRequest} from "../../fetcher";
 import {getStatus, getTag} from "../lib";
 
-export default function TaskDetail(){
+export default function TaskReady(){
   let params = getCurrentInstance().router.params;
   const { data, error } = useSWR(`https://localhost:7199/task/${params.id}`, fetcher)
-  console.log("data", data)
 
   const { trigger, isMutating} = useSWRMutation('https://localhost:7199/updateTaskTime', sendRequest, /* options */)
 
-  // console.log(data)
 
+  const [_, { setTitle }] = useNavigationBar();
 
-  const [showActStartTime, setShowActStartTime] = useState(false)
-  const [actStartTime, setActStartTime] = useState(data?.actStartTime)
+  useEffect(() => {
+    if (data == null) {
+      return
+    }
+    setTitle(data.name)
+  }, [data]);
 
-  const [showActEndTime, setShowActEndTime] = useState(false)
-  const [actEndTime, setActEndTime] = useState(data?.actEndTime)
-
-  useEffect(() => { setActStartTime(data?.actStartTime); }, [data])
-  useEffect(() => { setActEndTime(data?.actEndTime); }, [data])
-
-  const confirmActStartTime = (values)=>{
-    const date = values.slice(0, 3).join('-');
-    const time = values.slice(3).join(':');
-    setActStartTime(`${date  } ${  time}`)
-  }
-
-  const confirmActEndTime = (values)=>{
-    const date = values.slice(0, 3).join('-');
-    const time = values.slice(3).join(':');
-    setActEndTime(`${date  } ${  time}`)
-  }
 
   async function handleClick(){
     console.log("click...", data);
@@ -62,45 +48,24 @@ export default function TaskDetail(){
     }
   }
 
-  const minDate = new Date(2023, 0, 1)
-
-
 
   return (
     <>
       <CellGroup title='开始'>
         <Cell title='最早' desc={data?.earlyStartTime} />
         <Cell title='最晚' desc={data?.lateStartTime} />
-        <Cell title='实际' desc={actStartTime} onClick={() => setShowActStartTime(true)} />
-        <DatePicker
-          title='时间选择'
-          type='datetime'
-          minDate={minDate}
-          visible={showActStartTime}
-          onCloseDatePicker={() => setShowActStartTime(false)}
-          onConfirmDatePicker={(values,options) => confirmActStartTime(values,options)}
-        />
       </CellGroup>
 
-      <CellGroup title='结束'>
+      <CellGroup title='最晚'>
         <Cell title='最早' desc={data?.earlyEndTime} />
         <Cell title='最晚' desc={data?.lateEndTime} />
-        <Cell title='实际' desc={actEndTime} onClick={() => setShowActEndTime(true)} />
-        <DatePicker
-          title='时间选择'
-          type='datetime'
-          minDate={minDate}
-          visible={showActEndTime}
-          onCloseDatePicker={() => setShowActEndTime(false)}
-          onConfirmDatePicker={(values,options) => confirmActEndTime(values,options)}
-        />
       </CellGroup>
-
       <Row type='flex' justify='end'>
         <div style='padding-right: 10px'>
           {getTag(data?.statusCode, data?.activationCode)}
         </div>
       </Row>
+
 
       <CellGroup title='资源'>
         <Collapse activeName={[]} icon='arrow-down' iconSize='16' iconColor='#999'>
@@ -128,12 +93,12 @@ export default function TaskDetail(){
           </CollapseItem>
         </Collapse>
 
-       <Row type='flex' justify='center'>
-         <Button type='info' onClick={handleClick}>
-           更新
-         </Button>
-       </Row>
-     </CellGroup>
-   </>
+        <Row type='flex' justify='center'>
+          <Button type='info' onClick={handleClick}>
+            开始工作
+          </Button>
+        </Row>
+      </CellGroup>
+    </>
   )
 }

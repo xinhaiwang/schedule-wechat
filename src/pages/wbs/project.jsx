@@ -1,7 +1,7 @@
 import useSWR from "swr";
-import {fetcher} from "../../fetcher";
 import {Cell, CellGroup} from "@nutui/nutui-react-taro";
 import Taro from "@tarojs/taro";
+import {fetcher} from "../../fetcher";
 
 export default function Project(){
   const { data: projects, error } = useSWR('https://localhost:7199/projects', fetcher);

@@ -19,17 +19,17 @@ export function getTag(statusCode, activationCode){
 
 export function getOnTapFunction(id, statusCode, activationCode){
   if (statusCode === "TK_Complete") {
-    return ()=> Taro.navigateTo({url: `/pages/history/historyDetail?id=${id}`});
+    return ()=> Taro.navigateTo({url: `/pages/taskDetail/taskComplete?id=${id}`});
   }
 
   if (statusCode === "TK_Active"){
-    return ()=> Taro.navigateTo({url: `/pages/taskDetail/taskDetail?id=${id}`});
+    return ()=> Taro.navigateTo({url: `/pages/taskDetail/taskActive?id=${id}`});
   }
 
   if (statusCode === "TK_NotStart" && (activationCode === "TK_ReadyNotLate" || activationCode === "TK_ReadyLate")) {
-    return ()=> Taro.navigateTo({url: `/pages/taskDetail/taskDetail?id=${id}`});
+    return ()=> Taro.navigateTo({url: `/pages/taskDetail/taskReady?id=${id}`});
   }
-  return () => {};
+  return ()=> Taro.navigateTo({url: `/pages/taskDetail/taskNotReady?id=${id}`});
 
 }
 
@@ -46,3 +46,4 @@ export function getStatus(statusCode){
   return '未开始';
 
 }
+
