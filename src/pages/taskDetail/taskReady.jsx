@@ -5,11 +5,13 @@ import useSWRMutation from 'swr/mutation';
 import {useNavigationBar} from "taro-hooks";
 import useSWR from 'swr';
 import {fetcher, sendRequest} from "../../fetcher";
-import {getStatus, getTag} from "../lib";
+import {getStatus, getTag, getTodayString} from "../lib";
 
 export default function TaskReady(){
   let params = getCurrentInstance().router.params;
   const { data, error } = useSWR(`https://localhost:7199/task/${params.id}`, fetcher)
+  console.log(data)
+
 
   const { trigger, isMutating} = useSWRMutation('https://localhost:7199/updateTaskTime', sendRequest, /* options */)
 
@@ -25,10 +27,10 @@ export default function TaskReady(){
 
 
   async function handleClick(){
-    console.log("click...", data);
+    console.log("taskReady...", data);
 
     try {
-      const res = await trigger({...data, actStartTime: actStartTime, actEndTime: actEndTime})
+      const res = await trigger({...data, actStartTime: getTodayString()})
       console.log("resutt", res)
       if (res && !res.ok) {
         throw new Error('提交失败!');

@@ -1,11 +1,11 @@
 import {Button, Cell, CellGroup, Collapse, CollapseItem, DatePicker, Row, Sticky} from "@nutui/nutui-react-taro";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import Taro, {getCurrentInstance} from "@tarojs/taro";
-import {useModal, useNavigationBar, useToast} from "taro-hooks";
+import {useNavigationBar} from "taro-hooks";
 import useSWRMutation from 'swr/mutation';
 import useSWR from 'swr';
 import {fetcher, sendRequest} from "../../fetcher";
-import {getStatus, getTag} from "../lib";
+import {getOnTapFunction, getTag, getTodayString} from "../lib";
 
 export default function TaskActive(){
   let params = getCurrentInstance().router.params;
@@ -27,30 +27,18 @@ export default function TaskActive(){
   const [showActStartTime, setShowActStartTime] = useState(false)
   const [actStartTime, setActStartTime] = useState(data?.actStartTime)
 
-  const [showActEndTime, setShowActEndTime] = useState(false)
-  const [actEndTime, setActEndTime] = useState(data?.actEndTime)
 
   useEffect(() => { setActStartTime(data?.actStartTime); }, [data])
-  useEffect(() => { setActEndTime(data?.actEndTime); }, [data])
 
   const confirmActStartTime = (values)=>{
     const date = values.slice(0, 3).join('-');
     const time = values.slice(3).join(':');
     setActStartTime(`${date  } ${  time}`)
   }
-
-  const confirmActEndTime = (values)=>{
-    const date = values.slice(0, 3).join('-');
-    const time = values.slice(3).join(':');
-    setActEndTime(`${date  } ${  time}`)
-  }
-
   async function handleClick(){
-    console.log("click...", data);
 
     try {
-      const res = await trigger({...data, actStartTime: actStartTime, actEndTime: actEndTime})
-      console.log("resutt", res)
+      const res = await trigger({...data, actStartTime: actStartTime, actEndTime: getTodayString()})
       if (res && !res.ok) {
         throw new Error('提交失败!');
       } else {
@@ -82,7 +70,7 @@ export default function TaskActive(){
         <DatePicker
           title='时间选择'
           type='datetime'
-          modelValue={actStartTime}
+          // modelValue={actStartTime}
           minDate={minDate}
           visible={showActStartTime}
           onCloseDatePicker={() => setShowActStartTime(false)}
@@ -93,16 +81,6 @@ export default function TaskActive(){
       <CellGroup title='结束'>
         <Cell title='最早' desc={data?.earlyEndTime} />
         <Cell title='最晚' desc={data?.lateEndTime} />
-        <Cell title='实际' desc={actEndTime} onClick={() => setShowActEndTime(true)} />
-        <DatePicker
-          title='时间选择'
-          type='datetime'
-          modelValue={actEndTime}
-          minDate={minDate}
-          visible={showActEndTime}
-          onCloseDatePicker={() => setShowActEndTime(false)}
-          onConfirmDatePicker={(values,options) => confirmActEndTime(values,options)}
-        />
       </CellGroup>
 
       <Row type='flex' justify='center'>
@@ -139,7 +117,7 @@ export default function TaskActive(){
 
         <Row type='flex' justify='center'>
           <Button type='info' onClick={handleClick}>
-            更新
+            完成工作
           </Button>
         </Row>
       </CellGroup>

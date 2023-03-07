@@ -47,3 +47,34 @@ export function getStatus(statusCode){
 
 }
 
+
+export function getTodayString() {
+  const t = new Date();
+
+  let month = (t.getMonth() + 1).toString();
+
+  let day = t.getDate().toString();
+
+  let hour = t.getHours().toString();
+
+  let minute = t.getMinutes().toString();
+
+  if (month.length === 1) {
+    month = "0" + month;
+  }
+
+  if (day.length === 1) {
+    day = "0" + day;
+  }
+
+  if (hour.length === 1) {
+    hour = "0" + hour;
+  }
+
+  if (minute.length === 1) {
+    minute = "0" + minute;
+  }
+
+
+  return t.getFullYear() + "-" + month + "-" + day + " " + hour + ":" + minute;
+}

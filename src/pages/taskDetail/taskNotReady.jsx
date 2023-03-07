@@ -3,12 +3,13 @@ import {useNavigationBar} from "taro-hooks";
 import Taro, {getCurrentInstance} from "@tarojs/taro";
 import useSWR from 'swr';
 import {fetcher} from "../../fetcher";
-import {getStatus, getTag} from "../lib";
+import {getOnTapFunction, getStatus, getTag} from "../lib";
 import {useEffect} from "react";
 
 export default function TaskNotReady(){
   let params = getCurrentInstance().router.params;
   const { data, error } = useSWR(`https://localhost:7199/task/${params.id}`, fetcher)
+  console.log(data);
   const [_, { setTitle }] = useNavigationBar();
 
   useEffect(() => {
@@ -29,6 +30,14 @@ export default function TaskNotReady(){
       <CellGroup title='最晚'>
         <Cell title='最早' desc={data?.earlyEndTime} />
         <Cell title='最晚' desc={data?.lateEndTime} />
+      </CellGroup>
+
+      <CellGroup title='紧前'>
+        {
+          data?.preTasks?.map(function({id, name, actEndTime, statusCode, activationCode}){
+            return (<Cell iconSlot={getTag(statusCode, activationCode)} title={name} desc={actEndTime} onClick={getOnTapFunction(id, statusCode, activationCode)} />);
+          })
+        }
       </CellGroup>
 
       <Row type='flex' justify='end'>

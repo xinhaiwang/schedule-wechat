@@ -1,23 +1,39 @@
-import { View, Text, Button, Image } from "@tarojs/components";
-import Taro, {getCurrentInstance} from "@tarojs/taro";
-import {Cell, CellGroup, Icon, Row} from "@nutui/nutui-react-taro";
-import { Tag } from '@nutui/nutui-react-taro';
-
-import logoImg from "../imgs/logo.png";
-import frontImg from '../imgs/frontImg.jpg';
-import dateImg from '../imgs/data.png';
-import taskImg from '../imgs/task.png';
-
-import './index.scss'
+import {Cell, CellGroup} from "@nutui/nutui-react-taro";
 import useSWR from "swr";
 import {fetcher} from "../../fetcher";
 import {getOnTapFunction, getTag} from "../lib";
 
+import './index.scss'
+import {useCallback, useState} from "react";
+import Taro from "@tarojs/taro";
+
 const Index = () => {
+
+  const itemSize = 100;
 
   const { data: tasks, error } = useSWR('https://localhost:7199/tasks', fetcher);
 
-  // console.log(tasks)
+  const [isLoading, setIsLoading] = useState(false);
+
+  // function onScroll({scrollDirection, scrollOffset}) {
+  //
+  //   if (!isLoading && scrollDirection === 'forward' && scrollOffset > )
+  //
+  // }
+  //
+  // const getData = useCallback(async () => {
+  //   const datas = []
+  //   const pageSize = 90
+  //   const res = await Taro.request({url: `https://localhost:7199/${tasks}`})
+  //   Taro.request({url}).then(res => res.data)
+  //   for (let i = 10; i < pageSize; i++) {
+  //     datas.push(`${i} Item`)
+  //   }
+  //   setsourceData((sourceData) => {
+  //     return [...sourceData, ...datas]
+  //   })
+  // }, [])
+
 
   return (
     <>

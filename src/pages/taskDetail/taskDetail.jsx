@@ -8,11 +8,9 @@ import {fetcher, sendRequest} from "../../fetcher";
 import {getStatus, getTag} from "../lib";
 
 export default function TaskDetail(){
-  let params = getCurrentInstance().router.params;
-  const { data, error } = useSWR(`https://localhost:7199/task/${params.id}`, fetcher)
-  console.log("data", data)
+  const { data, error } = useSWR(`https://localhost:7199/test`, fetcher)
 
-  const { trigger, isMutating} = useSWRMutation('https://localhost:7199/updateTaskTime', sendRequest, /* options */)
+  const { trigger, isMutating} = useSWRMutation('https://localhost:7199/test', sendRequest, /* options */)
 
   // console.log(data)
 
@@ -40,9 +38,13 @@ export default function TaskDetail(){
 
   async function handleClick(){
     console.log("click...", data);
+    data.name = "钢筋" + Math.random().toString(36).slice(2, 7);
+    data.statusCode = "TK_NotStart"
+    data.activationCode = "TK_NotReadyLate"
 
     try {
-      const res = await trigger({...data, actStartTime: actStartTime, actEndTime: actEndTime})
+      const res = await trigger({...data, actStartTime: null, actEndTime: null})
+
       console.log("resutt", res)
       if (res && !res.ok) {
         throw new Error('提交失败!');
