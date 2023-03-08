@@ -1,10 +1,9 @@
 import {Cell, CellGroup} from "@nutui/nutui-react-taro";
 import useSWR from "swr";
+import VirtualList from '@tarojs/components/virtual-list'
 import React, {useCallback, useEffect, useState} from "react";
 import {getOnTapFunction, getTag} from "../lib";
-import Taro, {useDidShow} from "@tarojs/taro";
-import { VirtualList } from '@nutui/nutui-react-taro';
-
+import Taro from "@tarojs/taro";
 
 import './index.scss'
 const Index = () => {
@@ -16,49 +15,68 @@ const Index = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [sourceData, setSourceData] = useState([])
-  const [pageNo, setPageNo] = useState(1);
+  const [historyData, setHistoryData] = useState([])
 
   // useEffect(() => {
   //   if (tasks != null){
   //     setSourceData(tasks)
   //   }
   // }, [tasks])
-  function onScroll() {
+  function onScroll({scrollDirection, scrollOffset}) {
     if (isLoading){
+      return
+    }
+
+
+    if (scrollDirection !== 'forward'){
+      return
+    }
+
+    console.log("scrollOffset", scrollOffset)
+
+    if (scrollOffset < (sourceData.length - 10) * itemSize + 50) {
       return
     }
 
     Taro.showLoading()
     setIsLoading(true)
     setTimeout(async () => {
-        await getData(sourceData.length)
+      if (scrollDirection === 'forward') {
+        await buildData(sourceData.length)
+      } else {
+        // await  buildData(historyData.length)
+      }
       setIsLoading(false)
       Taro.hideLoading()
-    }, 30)
+    }, 1000)
 
     // if (!isLoading && scrollDirection === 'forward' && scrollOffset > )
 
   }
 
-  useDidShow(() => {getData()})
-
-  async function getData(offset = 0){
+  async function buildData(offset = 0){
     console.log("offset", offset)
 
     const res = await Taro.request({url: `https://localhost:7199/tasks?offset=${offset}`})
     setSourceData((sourceData) => {
-      return [...sourceData, ...res.data]
+      // if (offset < 0){
+        // console.log("--data", res.data)
+        // setHistoryData([...historyData, ...res.data])
+      //   return [...res.data, ...sourceData]
+      // } else {
+        return [...sourceData, ...res.data]
+      // }
     })
   }
 
   // useEffect(() => {
-  //   getData()
-  // }, [getData])
+  //   buildData()
+  // }, [buildData])
 
 
-  const Row = React.memo(({ data }) => {
+  const Row = React.memo(({ id, index, data }) => {
     return (
-      <Cell iconSlot={getTag(data?.statusCode, data?.activationCode)} title={data?.name} desc={data?.actEndTime} onClick={getOnTapFunction(data?.id, data?.statusCode, data?.activationCode)} />
+      <Cell id={id} iconSlot={getTag(data[index]?.statusCode, data[index]?.activationCode)} title={data[index]?.name} desc={data[index]?.actEndTime} onClick={getOnTapFunction(data[index]?.id, data[index]?.statusCode, data[index]?.activationCode)} />
     )
   })
 
@@ -73,9 +91,12 @@ const Index = () => {
       {/*  }*/}
       {/*</CellGroup>*/}
       <VirtualList
-        itemSize={50}
-        sourceData={sourceData}
-        ItemRender={Row}
+        height={height}
+        itemSize={itemSize}
+        item={Row}
+        itemData={sourceData}
+        itemCount={sourceData.length}
+        width='100%'
         onScroll={onScroll}
       />
     </>
